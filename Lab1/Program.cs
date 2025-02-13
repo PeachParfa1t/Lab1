@@ -30,7 +30,7 @@
         }
     }
 
-    class Logic
+    public class Logic
     {
         public static bool IsLuckyNumber(int number)
         {
