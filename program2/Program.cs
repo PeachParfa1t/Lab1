@@ -2,7 +2,7 @@
 {
     using System;
 
-    class GradeCounter
+    public class GradeCounter
     {
         public int Count5 { get; private set; } = 0;
         public int Count4 { get; private set; } = 0;
