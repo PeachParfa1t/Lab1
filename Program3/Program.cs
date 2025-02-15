@@ -3,7 +3,7 @@
     using System;
     using System.Linq;
 
-    class SentenceChecker
+    public class SentenceChecker
     {
         public static void CheckWords(string firstSentence, string secondSentence)
         {
