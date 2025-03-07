@@ -1,56 +1,81 @@
 ﻿namespace program2
 {
     using System;
-
     public class GradeCounter
     {
-        public int Count5 { get; private set; } = 0;
-        public int Count4 { get; private set; } = 0;
-        public int Count3 { get; private set; } = 0;
-        public int Count2 { get; private set; } = 0;
+        private int count5 = 0; //приватные потому что инкапсуляция 
+        private int count4 = 0; //а из-за того что инкапсуляция там дальше методы эддгрейд и геткаунты
+        private int count3 = 0;
+        private int count2 = 0;
 
-        public bool ProcessGrade(int grade)
+        public bool TryAddGrade(int grade)
         {
-            switch (grade)
+            if (grade >= 2 && grade <= 5)  // Проверка на допустимость оценки
             {
-                case 5: Count5++; return true;
-                case 4: Count4++; return true;
-                case 3: Count3++; return true;
-                case 2: Count2++; return true;
-                default: return false;
+                switch (grade)
+                {
+                    case 5:
+                        count5++;
+                        break;
+                    case 4:
+                        count4++;
+                        break;
+                    case 3:
+                        count3++;
+                        break;
+                    case 2:
+                        count2++;
+                        break;
+                }
+                return true; 
             }
+            return false; 
         }
+
+        public int GetCount5() { return count5; } //решена проблема смешанной логики м взаимодействия с пользоватлем
+        public int GetCount4() { return count4; }
+        public int GetCount3() { return count3; }
+        public int GetCount2() { return count2; }
     }
 
     class Program
     {
         static void Main()
         {
-            Console.Write("Введите количество учеников: ");
-            int n = int.Parse(Console.ReadLine());
-            int[] grades = new int[n];
+            GradeCounter counter = new GradeCounter();
 
-            GradeCounter gradeCounter = new GradeCounter();
+            Console.WriteLine("Введите количество учеников:");
+            int n;
+            while (!int.TryParse(Console.ReadLine(), out n) || n <= 0)
+            {
+                Console.WriteLine("Введите положительное целое число.");
+            }
 
             for (int i = 0; i < n; i++)
             {
-                Console.Write($"Введите оценку ученика {i + 1}: ");
-                int grade = int.Parse(Console.ReadLine());
+                int grade;
+                Console.WriteLine("Введите оценку ученика (2-5):");
 
-                if (!gradeCounter.ProcessGrade(grade))
+                // Здесь больше нет проверки на диапазон, она теперь в TryAddGrade
+                while (true)
                 {
-                    Console.WriteLine("Ошибка! Введите оценку от 2 до 5.");
-                    i--;
+                    if (int.TryParse(Console.ReadLine(), out grade) && counter.TryAddGrade(grade))
+                    {
+                        break;  // Оценка успешно добавлена
+                    }
+                    else
+                    {
+                        Console.WriteLine("Ошибка! Введите число от 2 до 5.");
+                    }
                 }
             }
 
-            Console.WriteLine($"Количество пятерок: {gradeCounter.Count5}");
-            Console.WriteLine($"Количество четверок: {gradeCounter.Count4}");
-            Console.WriteLine($"Количество троек: {gradeCounter.Count3}");
-            Console.WriteLine($"Количество двоек: {gradeCounter.Count2}");
+            // Вывод результатов
+            Console.WriteLine("Количество пятерок: " + counter.GetCount5());
+            Console.WriteLine("Количество четверок: " + counter.GetCount4());
+            Console.WriteLine("Количество троек: " + counter.GetCount3());
+            Console.WriteLine("Количество двоек: " + counter.GetCount2());
         }
     }
-
-
 
 }

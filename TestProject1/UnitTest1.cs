@@ -1,46 +1,56 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Lab1;
 using NUnit.Framework;
-using Assert = Microsoft.VisualStudio.TestTools.UnitTesting.Assert;
-
-namespace Lab1.Tests
+using Lab1;
+namespace Lab1;
+[TestFixture]
+public class LogicTests
 {
-    [TestClass]
-    public class LogicTests
+    [SetUp]
+    public void Setup()
     {
-        [TestMethod]
-        public void LuckyNumberTest()
-        {
-            // Проверка счастливого числа
-            Assert.IsTrue(Logic.IsLuckyNumber(123321));
-        }
+    }
+    [Test]
+    public void LuckyNumberTest()
+    {
 
-        [TestMethod]
-        public void NotLuckyNumberTest()
-        {
-            // Проверка несчастливого числа
-            Assert.IsFalse(Logic.IsLuckyNumber(123456));
-        }
+        //Проверка, что число 123321 является счастливым.
+        //Сумма первых трех цифр (1 + 2 + 3) равна сумме последних трех (3 + 2 + 1).
 
-        [TestMethod]
-        public void LuckyNumberWithZerosTest()
-        {
-            // Проверка числа с нулями
-            Assert.IsTrue(Logic.IsLuckyNumber(100001));
-        }
+        var result = Logic.IsLuckyNumber(123321);
+        Assert.AreEqual(true, result);
+    }
+    [Test]
+    public void NotLuckyNumberTest()
+    {
+        //Проверка, что число 123456 не является счастливым.
+        // Сумма первых трех цифр (1 + 2 + 3) не равна сумме последних трех (4 + 5 + 6).
+        var result = Logic.IsLuckyNumber(123456);
+        Assert.AreEqual(false, result);
+    }
+    [Test]
+    public void EdgeCaseHighestLuckyNumberTest()
+    {
 
-        [TestMethod]
-        public void EdgeCaseLowestLuckyNumberTest()
-        {
-            // Проверка наименьшего счастливого числа
-            Assert.IsTrue(Logic.IsLuckyNumber(000000));
-        }
+        // Проверка, что число 999999 является счастливым.
+        // Сумма первых трех цифр (9 + 9 + 9) равна сумме последних трех (9 + 9 + 9).
+        var result = Logic.IsLuckyNumber(999999);
+        Assert.AreEqual(true, result);
+    }
+    [Test]
+    public void InputTestSixSymbols()
+    {
 
-        [TestMethod]
-        public void EdgeCaseHighestLuckyNumberTest()
-        {
-            // Проверка наибольшего счастливого числа
-            Assert.IsTrue(Logic.IsLuckyNumber(999999));
-        }
+        // Проверка, что введенное число является шестизначным.
+
+        var result = Logic.IsValidSixDigitNumber(123456);
+        Assert.AreEqual(true, result);
+    }
+    [Test]
+    public void InputTestNotSixSymbols()
+    {
+
+        // Проверка, что введенное число является шестизначным.
+
+        var result = Logic.IsValidSixDigitNumber(55);
+        Assert.AreEqual(false, result);
     }
 }

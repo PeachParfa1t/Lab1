@@ -5,62 +5,38 @@ namespace program2;
 [TestFixture]
 public class GradeCounterTests
 {
-    private GradeCounter _gradeCounter;
-
-    [SetUp]
-    public void Setup()
-    {
-        _gradeCounter = new GradeCounter();
-    }
-
     [Test]
-    public void ProcessGrade_WhenCalledWith5_IncrementsCount5()
+    public void Test_AddGrade()
     {
-        _gradeCounter.ProcessGrade(5);
-        Assert.AreEqual(1, _gradeCounter.Count5);
-    }
+        GradeCounter counter = new GradeCounter();
+        counter.TryAddGrade(5);
+        counter.TryAddGrade(5);
+        counter.TryAddGrade(4);
+        counter.TryAddGrade(3);
+        counter.TryAddGrade(2);
+        counter.TryAddGrade(2);
 
+        Assert.AreEqual(2, counter.GetCount5());
+        Assert.AreEqual(1, counter.GetCount4());
+        Assert.AreEqual(1, counter.GetCount3());
+        Assert.AreEqual(2, counter.GetCount2());
+    }
     [Test]
-    public void ProcessGrade_WhenCalledWith4_IncrementsCount4()
+    public void Test_AddInvalidGrades()
     {
-        _gradeCounter.ProcessGrade(4);
-        Assert.AreEqual(1, _gradeCounter.Count4);
+        GradeCounter counter = new GradeCounter();
+
+        // Пробуем добавить некорректные оценки
+        Assert.IsFalse(counter.TryAddGrade(6));  // Оценка больше 5
+        Assert.IsFalse(counter.TryAddGrade(1));  // Оценка меньше 2
+        Assert.IsFalse(counter.TryAddGrade(-1)); // Отрицательная оценка
+        Assert.IsFalse(counter.TryAddGrade(0));  // Оценка 0
+
+        // Проверяем, что не добавились некорректные оценки
+        Assert.AreEqual(0, counter.GetCount5());
+        Assert.AreEqual(0, counter.GetCount4());
+        Assert.AreEqual(0, counter.GetCount3());
+        Assert.AreEqual(0, counter.GetCount2());
     }
 
-    [Test]
-    public void ProcessGrade_WhenCalledWith3_IncrementsCount3()
-    {
-        _gradeCounter.ProcessGrade(3);
-        Assert.AreEqual(1, _gradeCounter.Count3);
-    }
-
-    [Test]
-    public void ProcessGrade_WhenCalledWith2_IncrementsCount2()
-    {
-        _gradeCounter.ProcessGrade(2);
-        Assert.AreEqual(1, _gradeCounter.Count2);
-    }
-
-    [Test]
-    public void ProcessGrade_WhenCalledWithInvalidGrade_ReturnsFalse()
-    {
-        bool result = _gradeCounter.ProcessGrade(1);
-        Assert.IsFalse(result);
-    }
-
-    [Test]
-    public void ProcessGrade_WhenCalledMultipleTimes_CorrectlyCountsGrades()
-    {
-        _gradeCounter.ProcessGrade(5);
-        _gradeCounter.ProcessGrade(5);
-        _gradeCounter.ProcessGrade(4);
-        _gradeCounter.ProcessGrade(3);
-        _gradeCounter.ProcessGrade(2);
-        _gradeCounter.ProcessGrade(2);
-
-        Assert.AreEqual(2, _gradeCounter.Count5);
-        Assert.AreEqual(1, _gradeCounter.Count4);
-        Assert.AreEqual(1, _gradeCounter.Count3);
-        Assert.AreEqual(2, _gradeCounter.Count2);
-    }
 }

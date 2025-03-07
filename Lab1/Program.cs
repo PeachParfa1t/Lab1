@@ -9,7 +9,13 @@
             Console.WriteLine("Определить, является ли заданное шестизначное число счастливым.");
             Console.WriteLine("Счастливым называют такое шестизначное число, что сумма его первых трех цифр равна сумме его последних трех цифр.");
 
-            int number = GetValidSixDigitNumber();
+            int number;
+            do
+            {
+                Console.Write("Введите шестизначное число: ");
+                string input = Console.ReadLine();
+                number = int.TryParse(input, out int result) ? result : -1;
+            } while (!Logic.IsValidSixDigitNumber(number));
 
             if (Logic.IsLuckyNumber(number))
                 Console.WriteLine("Число счастливое!");
@@ -17,21 +23,15 @@
                 Console.WriteLine("Число не является счастливым.");
         }
 
-        static int GetValidSixDigitNumber()
-        {
-            int number;
-            while (true)
-            {
-                Console.Write("Введите шестизначное число: ");
-                if (int.TryParse(Console.ReadLine(), out number) && number >= 100000 && number <= 999999)
-                    return number;
-                Console.WriteLine("Ошибка: введите корректное шестизначное число.");
-            }
-        }
+       
     }
 
     public class Logic
     {
+        public static bool IsValidSixDigitNumber(int number)
+        {
+            return number >= 100000 && number <= 999999;
+        }
         public static bool IsLuckyNumber(int number)
         {
             int firstDigit = number / 100000;
